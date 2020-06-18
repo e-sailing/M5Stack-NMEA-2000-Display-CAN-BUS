@@ -80,6 +80,8 @@ const unsigned long ReceiveMessages[] PROGMEM = {
   130306L, // Wind
   128275UL,// Log
   127245UL,// Rudder
+  130310UL,// Water temp
+  130311UL,// Water temp
   0
 };
 
@@ -340,6 +342,7 @@ void format21_30(char* outstr, float x) {
 	if      (count == 1) sprintf(outstr, "  %1.1f", x);
   else if (count == 2) sprintf(outstr, "%1.1f", x);
   else if (count == 3) sprintf(outstr, " %3.0f", x);
+  else if (count >= 4) sprintf(outstr, " %4.0f", x);
 }
 
 void format30(char* outstr, float x) {
@@ -422,9 +425,9 @@ void Page_5(void) {
   M5.Lcd.setTextColor(textColor, darkBackground);
   M5.Lcd.setTextSize(1);
 
-  if (BoatData.TripLog >= 0 && BoatData.TripLog < 100.) TripLog = BoatData.TripLog;
+  if (BoatData.TripLog >= 0) TripLog = BoatData.TripLog;
   else TripLog = 0.;
-  if (BoatData.Log >= 0 && BoatData.Log < 100.) Log = BoatData.Log;
+  if (BoatData.Log >= 0) Log = BoatData.Log;
   else Log = 0.;
 
   if (firstTime) {
@@ -623,7 +626,7 @@ void Page_1(void) {
 
   if (BoatData.AWS >= 0. && BoatData.AWS < 100.) AWS = BoatData.AWS;
   else AWS = 0.;
-  if (BoatData.AWA >= -180. && BoatData.AWA <= 180.) AWA = BoatData.AWA;
+  if (BoatData.AWA >= -180. && BoatData.AWA <= 360.) AWA = BoatData.AWA;
   else AWA = 0.;
 
   if (firstTime) {

@@ -44,6 +44,7 @@ void tN2kDataToNMEA0183::HandleMsg(const tN2kMsg &N2kMsg) {
     case 128275UL: HandleLog(N2kMsg);
     case 127245UL: HandleRudder(N2kMsg);
     case 130310UL: HandleWaterTemp(N2kMsg);
+    case 130311UL: HandleWaterTemp2(N2kMsg);
   }
 }
 
@@ -352,5 +353,30 @@ void tN2kDataToNMEA0183::HandleWind(const tN2kMsg &N2kMsg) {
       if ( !NMEA0183Msg.AddStrField("C") ) return;
       
       SendMessage(NMEA0183Msg);
+    }
+  }
+
+//*****************************************************************************
+  void tN2kDataToNMEA0183::HandleWaterTemp2(const tN2kMsg & N2kMsg) {
+
+    unsigned char SID;
+    tN2kTempSource TempSource;
+    double Temperature;
+    tN2kHumiditySource HumiditySource;
+    double Humidity;
+    double AtmosphericPressure;
+
+    if ( ParseN2kPGN130311(N2kMsg, SID, TempSource, Temperature, HumiditySource, Humidity, AtmosphericPressure) ) {
+
+      tNMEA0183Msg NMEA0183Msg;
+      if ( TempSource == N2kts_SeaTemperature) {
+        WaterTemperature = Temperature;
+        if ( !NMEA0183Msg.Init("MTW", "GP") ) return;
+        if ( !NMEA0183Msg.AddDoubleField(KelvinToC(WaterTemperature))) return;
+        if ( !NMEA0183Msg.AddStrField("C") ) return;
+        
+        SendMessage(NMEA0183Msg);
+      }
+
     }
   }

@@ -85,6 +85,7 @@ protected:
   void HandleLog(const tN2kMsg &N2kMsg); // 128275
   void HandleRudder(const tN2kMsg &N2kMsg); // 127245
   void HandleWaterTemp(const tN2kMsg &N2kMsg); // 130310
+  void HandleWaterTemp2(const tN2kMsg &N2kMsg); // 130311
 
   
   void SetNextRMCSend() { NextRMCSend=millis()+RMCPeriod; }
