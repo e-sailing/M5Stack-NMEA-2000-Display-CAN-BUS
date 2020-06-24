@@ -136,10 +136,14 @@ void setup() {
   M5.Lcd.setTextColor(textColor, darkBackground);
   M5.Lcd.setCursor(0, 0, 1);
 
-  ledcDetachPin(SPEAKER_PIN);
-  pinMode(SPEAKER_PIN, INPUT);
+  // disable speaker noise
+  dacWrite (SPEAKER_PIN,0);
 
-  Serial.begin(115200); delay(500);
+  setCpuFrequencyMhz(80);
+  delay(300);
+
+  Serial.begin(115200); 
+  delay(500);
 
 #if ENABLE_WIFI == 1
 
